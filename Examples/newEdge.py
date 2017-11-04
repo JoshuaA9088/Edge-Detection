@@ -1,8 +1,7 @@
 from Myro import *
 from Graphics import *
 t = 0
-linePic = Picture("img.jpg")
-show(linePic)
+linePic = Picture("sq.png")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
