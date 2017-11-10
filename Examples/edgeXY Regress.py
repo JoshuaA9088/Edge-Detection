@@ -44,6 +44,28 @@ def findEdge():
                        edge.append([i, j]) 
     return edge       
 
+
+
+def regCoef():
+    lenEdge = len(edge)
+    sumX = 0
+    sumY = 0
+    sumXY = 0
+    sumXX = 0
+    for pt in edge:
+        sumX += pt[0]
+        sumY += pt[1] 
+        sumXY += pt[0]*pt[1]
+        sumXX += pt[0]*pt[0]
+    #slope a
+    slope = ((lenEdge*sumXY) - (sumX) * (sumY)) / ((lenEdge*sumXX) - sumXX)
+    #int b
+    intercept = (sumY - (slope*sumX)) / lenEdge
+    print("Slope:",slope)
+    print("Intercept:", intercept) 
+    return [sumX, sumY, sumXY, sumXX, slope, intercept]
+    
+
 def myLine(x):
     m = 1
     b = 0
@@ -63,21 +85,10 @@ for pt in edge:
         sumR += pow(r,2)
     #print(r, pt[0], pt[1], yhat)
 newR = sumR/(len(edge))
-print(newR)
+print("newR:",newR)
+regCoef()
 
-def regCoef():
-    sumX = 0
-    sumY = 0
-    sumXY = 0
-    sumXX = 0
-    for pt in edge:
-        sumX += pt[0]
-        sumY += pt[1] 
-        sumXY += pt[0]*pt[1]
-        sumXX += pt[0]*pt[0]
-    
-    return [sumX, sumY, sumXY, sumXX]
-                      
+                          
 def drawMyLine():
     for i in range (linePic.width):
       yhat = myLine(i)
