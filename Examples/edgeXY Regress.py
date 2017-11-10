@@ -74,17 +74,18 @@ def myLine(x):
 edge = findEdge()
 sumR = 0
 #print(edge)
-
+weirdPoints = 0
 for pt in edge:
     yhat = myLine(pt[0])
     r = yhat - pt[1]
     if abs(r) > 350:
     #print(pt[0], pt[1])
-        print("weird point")
+        weirdPoints += 1
     else:
         sumR += pow(r,2)
     #print(r, pt[0], pt[1], yhat)
 newR = sumR/(len(edge))
+print("# of weird points:", weirdPoints)
 print("newR:",newR)
 regCoef()
 
