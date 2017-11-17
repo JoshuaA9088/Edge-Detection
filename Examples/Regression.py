@@ -1,6 +1,6 @@
 from Myro import *
 from Graphics import *
-
+import math
 ###
 linePic = Picture("line.png")
 newPic = Picture(linePic)
@@ -46,29 +46,48 @@ def findEdge():
     return edge       
 
 points = findEdge()
-#print(len(points))
+###
 xVal = []
 yVal = []
-for i in range (0,len(points),2):
-    xVal.append(points[i][0])
-print("XVAL:",xVal)
-    
-for j in range (0,len(points),2):
-    yVal.append(points[j][1])
-print("YVAL:",yVal)
-
+###
+newLen = 0
 sumX = 0
 sumY = 0
-
+devSumX = 0
+devSumY = 0
+###
+#Calc X SUM
+for i in range (0,len(points),2):
+    xVal.append(points[i][0])
+    newLen += 1
+print("XVAL:",len(xVal))
+#Calc Y SUM
+for j in range (0,len(points),2):
+    yVal.append(points[j][1])
+print("YVAL:",len(yVal))
+#Calc Avg X
 for i in range (len(xVal)):
     sumX += xVal[i]
 avgX = sumX / len(xVal)    
-    
+#Calc Avg Y 
 for j in range (len(yVal)):
     sumY += yVal[j]
 avgY = sumY / len(yVal)       
 
-print(avgX)
-print(avgY)
+for i in range(len(xVal)):
+    devSumX += (pow(xVal[i]-avgX,2))
 
-        
+for j in range(len(yVal)):
+    devSumY += (pow(yVal[j]-avgY,2))
+
+
+needRootX = devSumX / (len(xVal) - 1)
+needRootY = devSumY / (len(yVal) - 1) 
+
+devX = math.sqrt(needRootX)
+devY = math.sqrt(needRootY)
+
+print("stdDevX:", devX)        
+print("stdDevY:", devY)
+
+                
