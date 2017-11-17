@@ -2,7 +2,7 @@ from Myro import *
 from Graphics import *
 
 ###
-linePic = Picture("lineReg1.jpg")
+linePic = Picture("line.png")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
@@ -33,7 +33,8 @@ def findEdge():
                        edge.append([i, j]) 
                     else:
                        #newPic.setRGB(i, j, 255,255,0)
-                       edge.append([i, j]) 
+                       edge.append([i, j])
+                        
             if contrastX != 0:    
                 if abs(contrastX) >= thres1 or abs(contrastX) <= thres2:
                     if contrastX < 0: 
@@ -44,60 +45,30 @@ def findEdge():
                        edge.append([i, j]) 
     return edge       
 
-
-for i in range (len(edge)):
-    X = edge[i][0]
-    print(X)
-
-def regCoef():
-    lenEdge = len(edge)
-    sumX = 0
-    sumY = 0
-    sumXY = 0
-    sumXX = 0
-    for pt in edge:
-        sumX += pt[0]
-        sumY += pt[1] 
-        sumXY += pt[0]*pt[1]
-        sumXX += pt[0]*pt[0]
-    #slope a
-    global slope
-    slope = ((lenEdge*sumXY) - (sumX) * (sumY)) / ((lenEdge*sumXX) - sumXX)
-    #int b
-    global intercept
-    intercept = (sumY - (slope*sumX)) / lenEdge
+points = findEdge()
+#print(len(points))
+xVal = []
+yVal = []
+for i in range (0,len(points),2):
+    xVal.append(points[i][0])
+print("XVAL:",xVal)
     
-    print("Slope:",slope)
-    print("Intercept:", intercept) 
-    return [sumX, sumY, sumXY, sumXX, slope, intercept]
-    #drawMyLine()    
+for j in range (0,len(points),2):
+    yVal.append(points[j][1])
+print("YVAL:",yVal)
 
-def myLine(x):
-    m = 0
-    b = 0
-    return (m*x)+b
+sumX = 0
+sumY = 0
 
-edge = findEdge()
-sumR = 0
-#print(edge)
-weirdPoints = 0
-for pt in edge:
-    yhat = myLine(pt[0])
-    r = yhat - pt[1]
-    if abs(r) > 350:
-    #print(pt[0], pt[1])
-        weirdPoints += 1
-    else:
-        sumR += pow(r,2)
-    #print(r, pt[0], pt[1], yhat)
-newR = sumR/(len(edge))
-print("# of weird points:", weirdPoints)
-print("newR:",newR)
-regCoef()
+for i in range (len(xVal)):
+    sumX += xVal[i]
+avgX = sumX / len(xVal)    
+    
+for j in range (len(yVal)):
+    sumY += yVal[j]
+avgY = sumY / len(yVal)       
 
-                          
-def drawMyLine():
-    for i in range (linePic.width):
-      yhat = myLine(i)
-      c = Circle((i, yhat), 2)
-      c.draw(win)  
+print(avgX)
+print(avgY)
+
+        
