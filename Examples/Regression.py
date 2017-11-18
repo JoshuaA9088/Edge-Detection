@@ -45,7 +45,6 @@ def findEdge():
                        edge.append([i, j]) 
     return edge       
 
-points = findEdge()
 ###
 xVal = []
 yVal = []
@@ -56,24 +55,30 @@ sumY = 0
 devSumX = 0
 devSumY = 0
 ###
-#Calc X SUM
+points = findEdge()
+
+#Calc X Vals
 for i in range (0,len(points),2):
     xVal.append(points[i][0])
-    newLen += 1
+    newLen += 1 
 print("XVAL:",len(xVal))
-#Calc Y SUM
+
+#Calc Y Vals
 for j in range (0,len(points),2):
     yVal.append(points[j][1])
 print("YVAL:",len(yVal))
+
 #Calc Avg X
 for i in range (len(xVal)):
     sumX += xVal[i]
 avgX = sumX / len(xVal)    
+
 #Calc Avg Y 
 for j in range (len(yVal)):
     sumY += yVal[j]
 avgY = sumY / len(yVal)       
 
+### Stdev Equation
 for i in range(len(xVal)):
     devSumX += (pow(xVal[i]-avgX,2))
 
@@ -86,8 +91,26 @@ needRootY = devSumY / (len(yVal) - 1)
 
 devX = math.sqrt(needRootX)
 devY = math.sqrt(needRootY)
+###
+sumAB = 0
+sumAA = 0
+sumBB = 0
+for i in range(len(xVal)):
+    #A or B = point - avg x or y corresponding
+    a = xVal[i] - avgX
+    b = yVal[i] - avgY
+    #Sum of A * B
+    sumAB += a*b
+    #Sum of A Squared
+    sumAA += a*a
+    #Sum of B Squared
+    sumBB += b*b
 
+r = sumAB / (math.sqrt(sumAA * sumBB))
+print("R:",r)
 print("stdDevX:", devX)        
 print("stdDevY:", devY)
+m = r*(devY / devX)
+print("Slope:", m)
 
                 
