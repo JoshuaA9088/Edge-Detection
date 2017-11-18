@@ -113,4 +113,10 @@ print("stdDevY:", devY)
 m = r*(devY / devX)
 print("Slope:", m)
 
+lowestX = xVal.index(min(xVal))
+lowestY = yVal.index(min(yVal))
+
+yint = [xVal[lowestX], yVal[lowestX]]
+
+
                 

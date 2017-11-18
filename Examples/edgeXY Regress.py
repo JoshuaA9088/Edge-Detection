@@ -1,8 +1,9 @@
 from Myro import *
 from Graphics import *
+import math
 
 ###
-linePic = Picture("lineReg1.jpg")
+linePic = Picture("line.png")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
@@ -44,11 +45,7 @@ def findEdge():
                        edge.append([i, j]) 
     return edge       
 
-
-for i in range (len(edge)):
-    X = edge[i][0]
-    print(X)
-
+"""
 def regCoef():
     lenEdge = len(edge)
     sumX = 0
@@ -71,12 +68,101 @@ def regCoef():
     print("Intercept:", intercept) 
     return [sumX, sumY, sumXY, sumXX, slope, intercept]
     #drawMyLine()    
+"""
 
-def myLine(x):
-    m = 0
-    b = 0
+def regCoef():
+    ###
+    xVal = []
+    yVal = []
+    ###
+    newLen = 0
+    sumX = 0
+    sumY = 0
+    devSumX = 0
+    devSumY = 0
+    ###
+    points = findEdge()
+
+    #Calc X Vals
+    for i in range (0,len(points),2):
+        xVal.append(points[i][0])
+        newLen += 1 
+    #print("XVAL:",len(xVal))
+
+    #Calc Y Vals
+    for j in range (0,len(points),2):
+        yVal.append(points[j][1])
+    #print("YVAL:",len(yVal))
+
+    #Calc Avg X
+    for i in range (len(xVal)):
+        sumX += xVal[i]
+    avgX = sumX / len(xVal)    
+
+    #Calc Avg Y 
+    for j in range (len(yVal)):
+        sumY += yVal[j]
+    avgY = sumY / len(yVal)       
+
+    ### Stdev Equation
+    for i in range(len(xVal)):
+        devSumX += (pow(xVal[i]-avgX,2))
+
+    for j in range(len(yVal)):
+        devSumY += (pow(yVal[j]-avgY,2))
+
+
+    needRootX = devSumX / (len(xVal) - 1)
+    needRootY = devSumY / (len(yVal) - 1) 
+
+    devX = math.sqrt(needRootX)
+    devY = math.sqrt(needRootY)
+    ###
+    sumAB = 0
+    sumAA = 0
+    sumBB = 0
+    for i in range(len(xVal)):
+        #A or B = point - avg x or y corresponding
+        a = xVal[i] - avgX
+        b = yVal[i] - avgY
+        #Sum of A * B
+        sumAB += a*b
+        #Sum of A Squared
+        sumAA += a*a
+        #Sum of B Squared
+        sumBB += b*b
+
+    r = sumAB / (math.sqrt(sumAA * sumBB))
+    m = r*(devY / devX)
+    
+    print("R:",r)
+    print("stdDevX:", devX)        
+    print("stdDevY:", devY)
+    print("Slope:", m)
+    
+    lowestX = xVal.index(min(xVal))
+    lowestY = yVal.index(min(yVal))
+    b = yVal[lowestX]
+    drawMyLine(m,b)
+    return [m, b]
+
+                
+def myLine(x,m,b):
+    #m = m
+    #b = b
     return (m*x)+b
 
+
+                          
+def drawMyLine(m,b):
+    for i in range (linePic.width):
+      yhat = myLine(i,m,b)
+      c = Circle((i, yhat), 2)
+      c.draw(win)
+      
+regCoef()       
+
+"""  
 edge = findEdge()
 sumR = 0
 #print(edge)
@@ -93,11 +179,4 @@ for pt in edge:
 newR = sumR/(len(edge))
 print("# of weird points:", weirdPoints)
 print("newR:",newR)
-regCoef()
-
-                          
-def drawMyLine():
-    for i in range (linePic.width):
-      yhat = myLine(i)
-      c = Circle((i, yhat), 2)
-      c.draw(win)  
+"""
