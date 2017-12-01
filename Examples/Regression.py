@@ -2,7 +2,7 @@ from Myro import *
 from Graphics import *
 import math
 ###
-linePic = Picture("line.png")
+linePic = Picture("lineByDots.jpg")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")

@@ -3,45 +3,56 @@ from Graphics import *
 import math
 
 ###
-linePic = Picture("lineByDots.jpg")
+linePic =Picture("block1.png")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
 win = getWindow("New")
+grayImg = Picture(linePic)
 ###
 
 ###
-thres1 = 80
-thres2 = 0
+thres1 = 25
+thres2 = 1000
 ###
+
+def grayscale(img):
+    for i in range (img.width):
+        for j in range (img.height):
+            r,g,b = linePic.getRGB(i, j)
+            total = (r + g + b) / 3
+            #print(total)
+            grayImg.setRGB(i, j, total, total, total)  
+    show(grayImg)
 
 def findEdge():
     edge = []
-    for i in range (linePic.width):
-        for j in range (linePic.height):
+    for i in range(0, linePic.width, 1):
+        for j in range(0, linePic.height, 1):
             rY1,gY1,bY1 = linePic.getRGB(i, j)
             rY2,gY2,bY2 = linePic.getRGB(i, j+1)
             contrastY = gY1 - gY2
-            
+            #print(contrastX)
             rX1,gX1,bX1 = linePic.getRGB(i, j)
             rX2,gX2,bX2 = linePic.getRGB(i+1, j)
             contrastX = gX1 - gX2
             
+            
             if contrastY != 0:
-                if abs(contrastY) >= thres1 or abs(contrastY) <= thres2:
-                    if contrastY < 0: 
-                       #newPic.setRGB(i, j+1, 255,0,255)
+                if abs(contrastY) >= thres1 and abs(contrastY) <= thres2:
+                   if contrastY < 0:
                        edge.append([i, j]) 
-                    else:
-                       #newPic.setRGB(i, j, 255,255,0)
-                       edge.append([i, j]) 
+                       newPic.setRGB(i, j+1, 0,255,0)
+                   else:
+                        newPic.setRGB(i, j, 0,255,0)
+                        edge.append([i, j]) 
             if contrastX != 0:    
-                if abs(contrastX) >= thres1 or abs(contrastX) <= thres2:
-                    if contrastX < 0: 
-                       #newPic.setRGB(i+1, j, 255,0,255)
+                if abs(contrastX) >= thres1 and abs(contrastX) <= thres2:
+                   if contrastX < 0:
+                       newPic.setRGB(i, j, 0,255,0) 
                        edge.append([i, j]) 
-                    else:
-                       #newPic.setRGB(i, j, 255,255,0)
+                   else:
+                       newPic.setRGB(i, j, 0,255,0)
                        edge.append([i, j]) 
     return edge       
 
@@ -127,11 +138,12 @@ def pointCalc(x,m,b):
     return (m*x)+b
   
 def drawMyLine(m,b):
+    print('wrong')
     for i in range (linePic.width):
       yhat = pointCalc(i,m,b)
-      green = makeColor(0, 255, 0)
-      c = Circle((i, yhat), 1)
-      c.setColor(green)
+      blue = makeColor(0, 0, 255)
+      c = Circle((i, yhat), 15)
+      c.setColor(blue)
       c.draw(win)
       
 regCoef()  

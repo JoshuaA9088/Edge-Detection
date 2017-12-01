@@ -2,7 +2,7 @@ from Myro import *
 from Graphics import *
 
 ###
-linePic = Picture("lineReg1.jpg")
+linePic = Picture("blockG.png")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
