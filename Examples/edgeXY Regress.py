@@ -3,7 +3,7 @@ from Graphics import *
 import math
 
 ###
-linePic =Picture("block1.png")
+linePic =Picture("fakeBlock.jpg")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
@@ -120,9 +120,9 @@ def regCoef():
     #R value, correlation
     r = sumAB / (math.sqrt(sumAA * sumBB))
     m = r*(devY / devX)
-    lowestX = xVal.index(min(xVal))
-    lowestY = yVal.index(min(yVal))
-    b = yVal[lowestX]
+    b = yVal[0] - (m*xVal[0])
+    red = makeColor(255,0,0)
+
     drawMyLine(m,b)
     
     print("R:",r)
@@ -130,7 +130,7 @@ def regCoef():
     print("stdDevY:", devY)
     print("Slope:", m)
     print("int:", b)
-
+    print(yVal)
     return [m, b]
 
                 
@@ -138,12 +138,12 @@ def pointCalc(x,m,b):
     return (m*x)+b
   
 def drawMyLine(m,b):
-    print('wrong')
     for i in range (linePic.width):
       yhat = pointCalc(i,m,b)
       blue = makeColor(0, 0, 255)
-      c = Circle((i, yhat), 15)
+      c = Circle((i, yhat), 2)
       c.setColor(blue)
       c.draw(win)
-      
-regCoef()  
+
+regCoef()
+ 
