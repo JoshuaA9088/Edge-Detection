@@ -1,9 +1,11 @@
 from Myro import *
 from Graphics import *
 import math
+import csv
+
 
 ###
-linePic =Picture("fakeBlock.jpg")
+linePic =Picture("dots.jpg")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
@@ -68,15 +70,25 @@ def regCoef():
     devSumY = 0
     ###
     points = findEdge()
-
+    """
     #Calc X Vals Grabs every other point to map only one edge of a line
-    for i in range (0,len(points),2):
+        for i in range (0,len(points),2):
         xVal.append(points[i][0])
         newLen += 1 
     #print("XVAL:",len(xVal))
-
+    
     #Calc Y Vals ^
     for j in range (0,len(points),2):
+        yVal.append(points[j][1])
+    #print("YVAL:",len(yVal))
+    """
+    for i in range (len(points)):
+        xVal.append(points[i][0])
+        newLen += 1 
+#print("XVAL:",len(xVal))
+    
+    #Calc Y Vals ^
+    for j in range (len(points)):
         yVal.append(points[j][1])
     #print("YVAL:",len(yVal))
 
@@ -130,7 +142,12 @@ def regCoef():
     print("stdDevY:", devY)
     print("Slope:", m)
     print("int:", b)
-    print(yVal)
+    with open('x.csv', 'wb') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        wr.writerow(xVal)
+    with open('y.csv', 'wb') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        wr.writerow(yVal)    
     return [m, b]
 
                 
@@ -144,6 +161,7 @@ def drawMyLine(m,b):
       c = Circle((i, yhat), 2)
       c.setColor(blue)
       c.draw(win)
+
 
 regCoef()
  
