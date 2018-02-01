@@ -29,19 +29,19 @@ def findEdge():
             if contrastY != 0:
                 if abs(contrastY) >= thres1 or abs(contrastY) <= thres2:
                     if contrastY < 0: 
-                       #newPic.setRGB(i, j+1, 255,0,255)
+                       newPic.setRGB(i, j+1, 255,0,255)
                        edge.append([i, j]) 
                     else:
-                       #newPic.setRGB(i, j, 255,255,0)
+                       newPic.setRGB(i, j, 255,255,0)
                        edge.append([i, j])
                         
             if contrastX != 0:    
                 if abs(contrastX) >= thres1 or abs(contrastX) <= thres2:
                     if contrastX < 0: 
-                       #newPic.setRGB(i+1, j, 255,0,255)
+                       newPic.setRGB(i+1, j, 255,0,255)
                        edge.append([i, j]) 
                     else:
-                       #newPic.setRGB(i, j, 255,255,0)
+                       newPic.setRGB(i, j, 255,255,0)
                        edge.append([i, j]) 
     return edge       
 

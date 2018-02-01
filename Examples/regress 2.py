@@ -1,5 +1,6 @@
 from Myro import *
 from Graphics import *
+from collections import Counter
 import math
 import csv
 
@@ -166,8 +167,20 @@ def regCoef():
     m = m1 / m2 
     b = avgY - (m * avgX)       
     #R value, correlation
-    red = makeColor(255,0,0)
+    global red, blue
+    red = makeColor(255,0,0)    
+    blue = makeColor(0, 0, 255)
+    xCounter = Counter(xVal)
+    yCounter = Counter(yVal)
 
+    xItem, xNumber = xCounter.most_common(1)[0]
+    yItem, yNumber = yCounter.most_common(1)[0]
+
+    print(xItem, xNumber)
+    print(yItem, yNumber)
+    foo = Circle((xItem, yItem), 20)
+    foo.setColor(red)
+    foo.draw(win)
     drawMyLine(m,b)
     
     #print("R:",r)
@@ -191,7 +204,7 @@ def pointCalc(x,m,b):
 def drawMyLine(m,b):
     for i in range (linePic.width):
       yhat = pointCalc(i,m,b)
-      blue = makeColor(0, 0, 255)
+      
       c = Circle((i, yhat), 2)
       c.setColor(blue)
       c.draw(win)
@@ -199,3 +212,6 @@ def drawMyLine(m,b):
 
 regCoef()
  
+
+
+
