@@ -4,7 +4,8 @@ from collections import Counter
 import math
 import csv
 
-
+jThresh = 10
+iThresh = 10
 ###
 linePic =Picture("blockG.png")
 newPic = Picture(linePic)
@@ -44,22 +45,34 @@ def findEdge():
             if contrastY != 0:
                 if abs(contrastY) >= thres1 and abs(contrastY) <= thres2:
                    if contrastY < 0:
-                       edge.append([i, j]) 
-                       newPic.setRGB(i, j+1, 0,255,0)
+                       if i < iThresh or j < jThresh:
+                           pass
+                       else:
+                           edge.append([i, j]) 
+                           newPic.setRGB(i, j+1, 0,255,0)
 
                    else:
-                        newPic.setRGB(i, j, 0,255,0)
-                        edge.append([i, j])
+                        if i < iThresh or j < jThresh:
+                            pass
+                        else:
+                            newPic.setRGB(i, j, 0,255,0)
+                            edge.append([i, j])
  
             if contrastX != 0:    
                 if abs(contrastX) >= thres1 and abs(contrastX) <= thres2:
                    if contrastX < 0:
-                       newPic.setRGB(i, j, 0,255,0) 
-                       edge.append([i, j]) 
+                       if i < iThresh or j < jThresh:
+                           pass
+                       else:
+                            newPic.setRGB(i, j, 0,255,0) 
+                            edge.append([i, j]) 
                        
                    else:
-                       newPic.setRGB(i, j, 0,255,0)
-                       edge.append([i, j]) 
+                       if i < iThresh or j < jThresh:
+                            pass
+                       else:
+                            newPic.setRGB(i, j, 0,255,0)
+                            edge.append([i, j]) 
                        
     return edge       
 
@@ -170,18 +183,35 @@ def regCoef():
     global red, blue
     red = makeColor(255,0,0)    
     blue = makeColor(0, 0, 255)
-    xCounter = Counter(xVal)
-    yCounter = Counter(yVal)
 
+    
+    newX = list(filter(lambda a: a != 426, xVal))
+    newY = list(filter(lambda a: a != 265, yVal))
+    xCounter = Counter(newX)
+    yCounter = Counter(newY)
+    
     xItem, xNumber = xCounter.most_common(1)[0]
     yItem, yNumber = yCounter.most_common(1)[0]
-
+    
     print(xItem, xNumber)
     print(yItem, yNumber)
-    foo = Circle((xItem, yItem), 20)
-    foo.setColor(red)
-    foo.draw(win)
+    
+    l = Line((xItem, 0),(xItem, 266))
+    l.setColor(red)
+    l.border = 3
+    l.draw(win)
+
     drawMyLine(m,b)
+    
+    """
+    from Graphics import *
+    win = Window("Shapes", 200, 200)
+    shape = Line((10, 10), (190, 190))
+    shape.fill = Color("blue")
+    shape.border = 3
+    shape.draw(win)
+    """
+    
     
     #print("R:",r)
     print("stdDevX:", devX)        
@@ -204,10 +234,9 @@ def pointCalc(x,m,b):
 def drawMyLine(m,b):
     for i in range (linePic.width):
       yhat = pointCalc(i,m,b)
-      
       c = Circle((i, yhat), 2)
       c.setColor(blue)
-      c.draw(win)
+      #c.draw(win)
 
 
 regCoef()
