@@ -7,7 +7,7 @@ import csv
 jThresh = 10
 iThresh = 10
 ###
-linePic =Picture("blockG.png")
+linePic =Picture("blockG2.png")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
@@ -26,7 +26,7 @@ def grayscale(img):
             r,g,b = linePic.getRGB(i, j)
             total = (r + g + b) / 3
             #print(total)
-            grayImg.setRGB(i, j, total, total, total)  
+            grayImg.setRGB(i, j, total, total, total)
     show(grayImg)
 
 def findEdge():
@@ -40,15 +40,17 @@ def findEdge():
             rX1,gX1,bX1 = linePic.getRGB(i, j)
             rX2,gX2,bX2 = linePic.getRGB(i+1, j)
             contrastX = gX1 - gX2
-            
-            
+
+
             if contrastY != 0:
                 if abs(contrastY) >= thres1 and abs(contrastY) <= thres2:
                    if contrastY < 0:
                        if i < iThresh or j < jThresh:
+                           if i > iThresh - i or j > jThresh - j:
+                               pass
                            pass
                        else:
-                           edge.append([i, j]) 
+                           edge.append([i, j])
                            newPic.setRGB(i, j+1, 0,255,0)
 
                    else:
@@ -57,24 +59,24 @@ def findEdge():
                         else:
                             newPic.setRGB(i, j, 0,255,0)
                             edge.append([i, j])
- 
-            if contrastX != 0:    
+
+            if contrastX != 0:
                 if abs(contrastX) >= thres1 and abs(contrastX) <= thres2:
                    if contrastX < 0:
                        if i < iThresh or j < jThresh:
                            pass
                        else:
-                            newPic.setRGB(i, j, 0,255,0) 
-                            edge.append([i, j]) 
-                       
+                            newPic.setRGB(i, j, 0,255,0)
+                            edge.append([i, j])
+
                    else:
                        if i < iThresh or j < jThresh:
                             pass
                        else:
                             newPic.setRGB(i, j, 0,255,0)
-                            edge.append([i, j]) 
-                       
-    return edge       
+                            edge.append([i, j])
+
+    return edge
 
 def regCoef():
     ###
@@ -92,9 +94,9 @@ def regCoef():
     #Calc X Vals Grabs every other point to map only one edge of a line
         for i in range (0,len(points),2):
         xVal.append(points[i][0])
-        newLen += 1 
+        newLen += 1
     #print("XVAL:",len(xVal))
-    
+
     #Calc Y Vals ^
     for j in range (0,len(points),2):
         yVal.append(points[j][1])
@@ -102,9 +104,9 @@ def regCoef():
     """
     for i in range (len(points)):
         xVal.append(points[i][0])
-        newLen += 1 
+        newLen += 1
 #print("XVAL:",len(xVal))
-    
+
     #Calc Y Vals ^
     for j in range (len(points)):
         yVal.append(points[j][1])
@@ -113,12 +115,12 @@ def regCoef():
     #Calc Avg X
     for i in range (len(xVal)):
         sumX += xVal[i]
-    avgX = sumX / len(xVal)    
+    avgX = sumX / len(xVal)
 
-    #Calc Avg Y 
+    #Calc Avg Y
     for j in range (len(yVal)):
         sumY += yVal[j]
-    avgY = sumY / len(yVal)       
+    avgY = sumY / len(yVal)
 
     ### Stdev Equation
     for i in range(len(xVal)):
@@ -128,7 +130,7 @@ def regCoef():
         devSumY += (pow(yVal[j]-avgY,2))
 
     needRootX = devSumX / (len(xVal) - 1)
-    needRootY = devSumY / (len(yVal) - 1) 
+    needRootY = devSumY / (len(yVal) - 1)
 
     devX = math.sqrt(needRootX)
     devY = math.sqrt(needRootY)
@@ -150,12 +152,12 @@ def regCoef():
         sumAA += a*a
         #Sum of B Squared
         sumBB += b*b
-    
+
     r = sumAB / (math.sqrt(sumAA * sumBB))
     m = r*(devY / devX)
     b = yVal[0] - (m*xVal[0])
-    
-    
+
+
     """
     m1 = 0
     m2 = 0
@@ -174,35 +176,35 @@ def regCoef():
         sumBB += (b*b)
         m1 += ((xVal[i] - avgX) * (yVal[i] - avgY))
         m2 += ((xVal[i] - avgX) * (xVal[i] - avgX))
-        
+
     #m = (len(xVal) * sumAB) - (sumA * sumB) / ((len(xVal) * sumAA) - (sumAA))
     #b = ((sumB * sumAA) - (sumA * sumAB)) / ((len(xVal) * sumAA) - (sumAA))
-    m = m1 / m2 
-    b = avgY - (m * avgX)       
+    m = m1 / m2
+    b = avgY - (m * avgX)
     #R value, correlation
     global red, blue
-    red = makeColor(255,0,0)    
+    red = makeColor(255,0,0)
     blue = makeColor(0, 0, 255)
 
-    
+
     newX = list(filter(lambda a: a != 426, xVal))
     newY = list(filter(lambda a: a != 265, yVal))
     xCounter = Counter(newX)
     yCounter = Counter(newY)
-    
+
     xItem, xNumber = xCounter.most_common(1)[0]
     yItem, yNumber = yCounter.most_common(1)[0]
-    
+
     print(xItem, xNumber)
     print(yItem, yNumber)
-    
+
     l = Line((xItem, 0),(xItem, 266))
     l.setColor(red)
     l.border = 3
     l.draw(win)
 
     drawMyLine(m,b)
-    
+
     """
     from Graphics import *
     win = Window("Shapes", 200, 200)
@@ -211,10 +213,10 @@ def regCoef():
     shape.border = 3
     shape.draw(win)
     """
-    
-    
+
+
     #print("R:",r)
-    print("stdDevX:", devX)        
+    print("stdDevX:", devX)
     print("stdDevY:", devY)
     print("Slope:", m)
     print("int:", b)
@@ -223,14 +225,14 @@ def regCoef():
         wr.writerow(xVal)
     with open('y.csv', 'wb') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        wr.writerow(yVal)    
+        wr.writerow(yVal)
     return [m, b]
 
-                
+
 def pointCalc(x,m,b):
     y = (m*x)+b
     return y
-  
+
 def drawMyLine(m,b):
     for i in range (linePic.width):
       yhat = pointCalc(i,m,b)
@@ -240,7 +242,3 @@ def drawMyLine(m,b):
 
 
 regCoef()
- 
-
-
-
