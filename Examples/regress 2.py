@@ -6,8 +6,10 @@ import csv
 
 jThresh = 10
 iThresh = 10
+jThreshHigh = 420
+iThreshHigh = 250
 ###
-linePic =Picture("blockG2.png")
+linePic = Picture("blockG2.png")
 newPic = Picture(linePic)
 show(linePic, "Original")
 show(newPic, "New")
@@ -45,7 +47,7 @@ def findEdge():
             if contrastY != 0:
                 if abs(contrastY) >= thres1 and abs(contrastY) <= thres2:
                    if contrastY < 0:
-                       if i < iThresh or j < jThresh:
+                       if i < iThresh or j < jThresh or i > iThreshHigh or j > jThreshHigh:
                            if i > iThresh - i or j > jThresh - j:
                                pass
                            pass
@@ -54,7 +56,7 @@ def findEdge():
                            newPic.setRGB(i, j+1, 0,255,0)
 
                    else:
-                        if i < iThresh or j < jThresh:
+                        if i < iThresh or j < jThresh or i > iThreshHigh or j > jThreshHigh:
                             pass
                         else:
                             newPic.setRGB(i, j, 0,255,0)
@@ -63,14 +65,14 @@ def findEdge():
             if contrastX != 0:
                 if abs(contrastX) >= thres1 and abs(contrastX) <= thres2:
                    if contrastX < 0:
-                       if i < iThresh or j < jThresh:
+                       if i < iThresh or j < jThresh or i > iThreshHigh or j > jThreshHigh:
                            pass
                        else:
                             newPic.setRGB(i, j, 0,255,0)
                             edge.append([i, j])
 
                    else:
-                       if i < iThresh or j < jThresh:
+                       if i < iThresh or j < jThresh or i > iThreshHigh or j > jThreshHigh:
                             pass
                        else:
                             newPic.setRGB(i, j, 0,255,0)
@@ -220,6 +222,8 @@ def regCoef():
     print("stdDevY:", devY)
     print("Slope:", m)
     print("int:", b)
+    print("Height:", linePic.height)
+    print("Width:", linePic.width)
     with open('x.csv', 'wb') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(xVal)
@@ -238,7 +242,7 @@ def drawMyLine(m,b):
       yhat = pointCalc(i,m,b)
       c = Circle((i, yhat), 2)
       c.setColor(blue)
-      #c.draw(win)
+      c.draw(win)
 
 
 regCoef()
