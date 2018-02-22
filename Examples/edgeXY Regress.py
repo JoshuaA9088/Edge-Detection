@@ -3,7 +3,12 @@ from Graphics import *
 import math
 import csv
 
-
+iThresh = 10
+jThresh = 10
+iThreshHigh = 426
+jThreshHigh = 266
+iBlack = 0
+jBlack = 0 
 ###
 linePic =Picture("blockG.png")
 newPic = Picture(linePic)
@@ -43,22 +48,35 @@ def findEdge():
             if contrastY != 0:
                 if abs(contrastY) >= thres1 and abs(contrastY) <= thres2:
                    if contrastY < 0:
-                       edge.append([i, j]) 
-                       newPic.setRGB(i, j+1, 0,255,0)
-
+                       if i > iThresh and j > iThresh and i < iThreshHigh and j < jThreshHigh:
+                        edge.append([i, j]) 
+                        newPic.setRGB(i, j+1, 0,255,0)
+                        #Centroid
+                        global iBlack, jBlack
+                        iBlack += i
+                        jBlack += j
                    else:
-                        newPic.setRGB(i, j, 0,255,0)
-                        edge.append([i, j])
+                        if i > iThresh and j > jThresh and i < iThreshHigh and j < jThreshHigh:
+                            newPic.setRGB(i, j, 0,255,0)
+                            edge.append([i, j])
+                            iBlack += i
+                            jBlack += j
  
             if contrastX != 0:    
                 if abs(contrastX) >= thres1 and abs(contrastX) <= thres2:
                    if contrastX < 0:
-                       newPic.setRGB(i, j, 0,255,0) 
-                       edge.append([i, j]) 
+                       if i > iThresh and j > jThresh and i < iThreshHigh and j < jThreshHigh:
+                        newPic.setRGB(i, j, 0,255,0) 
+                        edge.append([i, j])
+                        iBlack += i
+                        jBlack += j 
                        
                    else:
-                       newPic.setRGB(i, j, 0,255,0)
-                       edge.append([i, j]) 
+                       if i > iThresh and j > jThresh and i < iThreshHigh and j < jThreshHigh:
+                        newPic.setRGB(i, j, 0,255,0)
+                        edge.append([i, j])
+                        iBlack += i
+                        jBlack += j 
                        
     return edge       
 
@@ -115,7 +133,7 @@ def regCoef():
 
     needRootX = devSumX / (len(xVal) - 1)
     needRootY = devSumY / (len(yVal) - 1) 
-
+    
     devX = math.sqrt(needRootX)
     devY = math.sqrt(needRootY)
     ###
@@ -170,11 +188,23 @@ def regCoef():
 
     drawMyLine(m,b)
     
+    #Centroid
+    iCentroid = iBlack / len(points)
+    jCentroid = jBlack / len(points)
+    
     #print("R:",r)
     print("stdDevX:", devX)        
     print("stdDevY:", devY)
     print("Slope:", m)
     print("int:", b)
+    print("Image Height:", linePic.height)
+    print("Image Width:", linePic.width)
+    print("iCentroid:", iCentroid)
+    print("jCentroid:", jCentroid)
+    c = Circle((iCentroid, jCentroid), 10)
+    c.setColor(red)
+    c.draw(win)
+    
     with open('x.csv', 'wb') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(xVal)
@@ -191,7 +221,9 @@ def pointCalc(x,m,b):
 def drawMyLine(m,b):
     for i in range (linePic.width):
       yhat = pointCalc(i,m,b)
+      global blue, red
       blue = makeColor(0, 0, 255)
+      red =  makeColor(255, 0, 0)
       c = Circle((i, yhat), 2)
       c.setColor(blue)
       c.draw(win)
