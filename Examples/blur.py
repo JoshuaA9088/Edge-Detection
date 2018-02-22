@@ -5,54 +5,54 @@ from Graphics import *
 import Math
 
 pic = Picture("blockG2.png")
-newPicNew = pic
+blurImage = Picture(pic)
+
+def blur(pic):
+    for x in range(0, pic.width, 1):
+        for y in range(0, pic.height, 1):
+            a = (x - 1, y - 1)
+            b = (x - 1, y)
+            c = (x -1, y + 1)
+            d = (x, y - 1)
+            e = (x, y)
+            f = (x, y + 1)
+            g = (x + 1, y - 1)
+            h = (x + 1, y)
+            i = (x + 1, y + 1)
+            aVal = pic.getRGB(a[0], a[1])
+            bVal = pic.getRGB(b[0], b[1])
+            cVal = pic.getRGB(c[0], c[1])
+            dVal = pic.getRGB(d[0], d[1])
+            eVal = pic.getRGB(e[0], e[1])
+            fVal = pic.getRGB(f[0], f[1])
+            gVal = pic.getRGB(g[0], g[1])
+            hVal = pic.getRGB(h[0], h[1])
+            iVal = pic.getRGB(i[0], i[1])
+            avgValR = (aVal[0] + bVal[0] + cVal[0] + eVal[0] + fVal[0] + gVal[0] + hVal[0] + iVal[0]) / 9
+            avgValG = (aVal[1] + bVal[1] + cVal[1] + eVal[1] + fVal[1] + gVal[1] + hVal[1] + iVal[1]) / 9
+            avgValB = (aVal[2] + bVal[2] + cVal[2] + eVal[2] + fVal[2] + gVal[2] + hVal[2] + iVal[2]) / 9
+            if e[0] == -1 or e[0] == 1:
+                pass
+            else:
+                blurImage.setRGB(e[0], e[1], avgValR, avgValG, avgValB)
+               # blurImage.setRGB(e[0], e[1], 255, 0, 0)
+            if e[1] == -1 or e[0] == 0:
+                pass
+            else:
+                #blurImage.setRGB(e[0], e[1], 255, 0, 0)
+                blurImage.setRGB(e[0], e[1], avgValR, avgValG, avgValB)
+                
+            #blurImage.setRGB(200,200,255,0,0)
+    show(blurImage, "BLUR IMAGE:")
+    show(pic, "ORIGINAL")
+    print(pic.width)
+    print(pic.height)
 
 
+blur(pic)
 
-jThresh = 10
-iThresh = 10
-jThreshHigh = 420
-iThreshHigh = 250
-###
-linePic = Picture("blockG2.png")
-newPic = Picture(linePic)
-show(linePic, "Original")
-show(newPic, "New")
-win = getWindow("New")
-grayImg = Picture(linePic)
-###
 
-###
-thres1 = 25
-thres2 = 1000
-###
-for x in range(pic.width):
-    for y in range(pic.height):
-        a = (x - 1, y - 1)
-        b = (x - 1, y)
-        c = (x -1, y + 1)
-        d = (x, y - 1)
-        e = (x, y)
-        f = (x, y + 1)
-        g = (x + 1, y - 1)
-        h = (x + 1, y)
-        i = (x + 1, y + 1)
-        aVal = pic.getRGB(a[0], a[1])
-        bVal = pic.getRGB(b[0], b[1])
-        cVal = pic.getRGB(c[0], c[1])
-        dVal = pic.getRGB(d[0], d[1])
-        eVal = pic.getRGB(e[0], e[1])
-        fVal = pic.getRGB(f[0], f[1])
-        gVal = pic.getRGB(g[0], g[1])
-        hVal = pic.getRGB(h[0], h[1])
-        iVal = pic.getRGB(i[0], i[1])
-        #sumVal = aVal + bVal + cVal + eVal + f
-        avgValR = (aVal[0] + bVal[0] + cVal[0] + eVal[0] + fVal[0] + gVal[0] + hVal[0] + iVal[0]) / 9
-        avgValG = (aVal[1] + bVal[1] + cVal[1] + eVal[1] + fVal[1] + gVal[1] + hVal[1] + iVal[1]) / 9
-        avgValB = (aVal[2] + bVal[2] + cVal[2] + eVal[2] + fVal[2] + gVal[2] + hVal[2] + iVal[2]) / 9
-        newPicNew.setRGB(e[0], e[1], avgValR, avgValG, avgValB)
-            
-
+"""
 def findEdge():
     edge = []
     for i in range(0, linePic.width, 1):
@@ -105,3 +105,16 @@ show(pic, "Original")
 show(newPicNew, "NEW NEW") 
 show(newPic, "NEW")
 foo = findEdge()
+"""
+
+
+# AT TOP NORMALLY
+"""
+jThresh = 10
+iThresh = 10
+jThreshHigh = 420
+ThreshHigh = 250
+linePic = Picture("blockG2.png")
+thres1 = 25
+thres2 = 1000
+"""
